@@ -250,7 +250,7 @@
     {
       "lean": "lemma iff_trans (P Q R : Prop) : (P ↔ Q) → (Q ↔ R) → (P ↔ R) :=\n",
       "isSolved": true,
-      "editorText": "intros hpq hqr,split,intro p,apply hqr.1,cc,intro r,cc,"
+      "editorText": "intros h,cases h with hpq hqp,intro x,cases x with hqr hrq,split,intro p,have q := hpq(p),have r := hqr(q),exact r,intro  r,have q := hrq(r),have p := hqp(q),exact p,"
     },
     {
       "lean": "example (P Q : Prop) : Q → (P ∨ Q) :=\n",
@@ -344,19 +344,23 @@
     },
     {
       "lean": "theorem mul_pos (a b : mynat) : a ≠ 0 → b ≠ 0 → a * b ≠ 0 :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases b with n,intros h k,apply k,cases a with g,intros h k l,apply h,refl,\r\nintros h k l,rw mul_succ at l,rw succ_mul at l,rw add_succ at l,exact succ_ne_zero _ l,"
     },
     {
       "lean": "theorem eq_zero_or_eq_zero_of_mul_eq_zero (a b : mynat) (h : a * b = 0) :\n  a = 0 ∨ b = 0 :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases b with x,right,refl,cases a with y,left,refl,rw mul_succ at h,rw add_succ at h,exfalso,exact succ_ne_zero _ h,"
     },
     {
       "lean": "theorem mul_eq_zero_iff (a b : mynat): a * b = 0 ↔ a = 0 ∨ b = 0 :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "split,intro h,apply eq_zero_or_eq_zero_of_mul_eq_zero,exact h,intro h,cases b with y,rw mul_zero,refl,cases h with ha hb,rw ha,rw zero_mul,refl,rw hb,rw mul_zero,refl,"
     },
     {
       "lean": "theorem mul_left_cancel (a b c : mynat) (ha : a ≠ 0) : a * b = a * c → b = c :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "induction c with x hd generalizing b,intro h,rw mul_zero at h,have hp := eq_zero_or_eq_zero_of_mul_eq_zero a b h,cases hp with x y,exfalso,apply ha,exact x,exact y,intro g,induction b with b ht,rw mul_zero at g,symmetry,symmetry at g,have j:= eq_zero_or_eq_zero_of_mul_eq_zero a (succ x) g,cases j with hj hk,exfalso,apply ha,exact hj,exact hk,rw mul_succ at g,rw mul_succ at g,have p := add_right_cancel (a * b) a (a * x) g,have s := hd b p,rw s,refl,"
     },
     {
       "lean": "lemma one_add_le_self (x : mynat) : x ≤ 1 + x :=\n",
